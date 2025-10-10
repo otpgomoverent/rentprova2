@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Go Move Rent</title>
+  <meta name="description" content="Noleggio auto, scooter e moto. Prenota online in pochi minuti.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="brand">Go Move Rent</a>
+      <nav class="menu" id="menu">
+        <a href="index.html#vantaggi">Vantaggi</a>
+        <a href="auto.html">Auto</a>
+        <a href="scooter.html">Scooter</a>
+        <a href="moto.html">Moto</a>
+        <a href="preventivo.html">Preventivo</a>
+        <a href="prenota.html">Prenota</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Apri menu">Menu</button>
+    </div>
+  </header>
+  <main class="hero"><div class="container"><h1 class="title">Moto disponibili</h1>
+  <p class="lead">Per viaggi lunghi e weekend.</p></div></main>
+  <section id="moto"><div class="container">
+  <div class="grid cards" style="grid-template-columns: repeat(3, 1fr);">
+
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop" alt="Honda X-ADV 750" style="width:100%; border-radius:12px; aspect-ratio: 16/10; object-fit: cover;" />
+          <h3>Honda X-ADV 750</h3>
+          <p class="muted">Moto</p>
+          <p><b>€ 80/giorno</b></p>
+          <div class="cta">
+            <a class="btn primary" href="prenota.html?vehicle=Honda%20X-ADV%20750&price=80&category=moto">Prenota questo</a>
+            <a class="btn" href="preventivo.html?cat=moto&preset=1">Calcola preventivo</a>
+          </div>
+        </article>
+
+</div>
+  </div></section>
+<footer>
+    <div class="container">
+      © <span id="year"></span> Go Move s.r.l. — P.IVA 00994550945 • <a href="#top">Torna su ↑</a>
+    </div>
+  </footer>
+  <script src="assets/script.js"></script>
+</body>
+</html>

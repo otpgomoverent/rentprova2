@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Go Move Rent</title>
+  <meta name="description" content="Noleggio auto, scooter e moto. Prenota online in pochi minuti.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="index.html" class="brand">Go Move Rent</a>
+      <nav class="menu" id="menu">
+        <a href="index.html#vantaggi">Vantaggi</a>
+        <a href="auto.html">Auto</a>
+        <a href="scooter.html">Scooter</a>
+        <a href="moto.html">Moto</a>
+        <a href="preventivo.html">Preventivo</a>
+        <a href="prenota.html">Prenota</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Apri menu">Menu</button>
+    </div>
+  </header>
+<main class="hero"><div class="container"><h1 class="title">Prenota ora</h1>
+<p id="vehicleChosen" class="muted" style="margin:8px 0 0 0;"></p></div></main>
+<section id="prenota"><div class="container">
+  <form id="bookingForm" onsubmit="handleBooking(event)" class="card">
+    <div><label for="pickup">Luogo di ritiro</label><input id="pickup" name="pickup" required placeholder="Roma Termini" /></div>
+    <div><label for="dropoff">Luogo di riconsegna</label><input id="dropoff" name="dropoff" required placeholder="Milano Centrale" /></div>
+    <div><label for="start">Data e ora ritiro</label><input id="start" name="start" type="datetime-local" required /></div>
+    <div><label for="end">Data e ora riconsegna</label><input id="end" name="end" type="datetime-local" required /></div>
+    <div><label for="category">Categoria veicolo</label>
+      <select id="category" name="category" required>
+        <option value="city">City Car</option><option value="berlina">Berlina</option><option value="suv">SUV</option><option value="furgone">Furgone</option>
+      </select>
+    </div>
+    <div><label for="age">Età conducente</label><input id="age" name="age" type="number" min="18" max="85" required placeholder="30" /></div>
+    <div class="grid" style="grid-template-columns: 1fr 1fr; gap:12px; margin-top:6px">
+      <label><input type="checkbox" id="opt_gps" /> Navigatore</label>
+      <label><input type="checkbox" id="opt_seat" /> Seggiolino bimbo</label>
+      <label><input type="checkbox" id="opt_add" /> Guidatore aggiuntivo</label>
+      <label><input type="checkbox" id="opt_kasko" /> Kasko totale</label>
+    </div>
+    <button class="btn primary" type="submit">Verifica disponibilità</button>
+    <p id="formStatus" class="muted" role="status" aria-live="polite"></p>
+  </form>
+</div></section>
+<footer>
+    <div class="container">
+      © <span id="year"></span> Go Move s.r.l. — P.IVA 00994550945 • <a href="#top">Torna su ↑</a>
+    </div>
+  </footer>
+  <script src="assets/script.js"></script>
+</body>
+</html>
