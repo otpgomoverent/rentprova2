@@ -117,3 +117,26 @@ footer { background:#0f172a; color:#c7d2fe; margin-top: 24px }
   .footer-grid { grid-template-columns: 1fr }
   .logo { height: 56px }
 }
+/* Social icons */
+.social {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; margin-left: 8px;
+  color: #1f2a44;
+}
+.social svg { width: 22px; height: 22px; fill: currentColor; }
+.social.ig:hover { color: #E1306C; }   /* Instagram */
+.social.wa:hover { color: #25D366; }   /* WhatsApp */
+
+.social-row { display:flex; align-items:center; gap:10px; margin-top:8px }
+
+/* WhatsApp floating button */
+.whatsapp-fab {
+  position: fixed; right: 18px; bottom: 18px; z-index: 60;
+  width: 54px; height: 54px; border-radius: 50%;
+  display:flex; align-items:center; justify-content:center;
+  background: #25D366; color: #fff; box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  border: none;
+}
+.whatsapp-fab svg { width: 28px; height: 28px; fill: currentColor; }
+.whatsapp-fab:hover { transform: translateY(-2px); }
+
