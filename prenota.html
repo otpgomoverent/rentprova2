@@ -277,42 +277,6 @@
         if(window._lastQuote){ renderQuoteSmart(window._lastQuote); }
       };
     }
-    if(typeof handleBooking === 'function'){
-      const _b = handleBooking;
-      window.handleBooking = function(e){
-        e && e.preventDefault && e.preventDefault();
-        try{ _b.apply(this, arguments);}catch(err){}
-        try{
-          const form = (e && e.target) || document.querySelector('#bookingForm');
-          const start = new Date(form?.start?.value), end = new Date(form?.end?.value);
-          const hours = Math.ceil((end-start)/36e5);
-          const days = Math.max(1, Math.ceil(hours/24));
-          const age = Number(form?.age?.value || 0);
-          const category = form?.category?.value || '';
-          let daily = (typeof basePriceFor==='function') ? basePriceFor(category) : 50;
-          if (age && age < 25) daily += 12;
-          let totale = daily * days;
-          if (document.getElementById('opt_gps')?.checked) totale += 5 * days;
-          if (document.getElementById('opt_seat')?.checked) totale += 4 * days;
-          if (document.getElementById('opt_add')?.checked)  totale += 6 * days;
-          if (document.getElementById('opt_kasko')?.checked) totale += 15 * days;
-          const summary = {
-            ok:true, totale,
-            rows: [
-              {k:'Categoria', v: category},
-              {k:'Giorni', v: String(days)},
-              {k:'Età conducente', v: String(age||'')},
-              {k:'Navigatore', v: document.getElementById('opt_gps')?.checked ? 'Sì':'No'},
-              {k:'Seggiolino bimbo', v: document.getElementById('opt_seat')?.checked ? 'Sì':'No'},
-              {k:'Guidatore aggiuntivo', v: document.getElementById('opt_add')?.checked ? 'Sì':'No'},
-              {k:'Kasko totale', v: document.getElementById('opt_kasko')?.checked ? 'Sì':'No'}
-            ]
-          };
-          renderBookingSmart(summary);
-        }catch(err){}
-      };
-    }
-  })();
   </script>
 
 </body>
