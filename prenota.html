@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Prenota — Go Move Rent</title>
+  <meta name="description" content="Prenotazione noleggio a Ercolano (NA).">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body data-page="prenota">
+  <div class="topbar">
+    <div class="container topbar-row">
+      <div class="tb-left">Contatti: <a href="tel:+39000000000">+39 000 000 000</a> • <a href="mailto:info@gomove.it">info@gomove.it</a></div>
+      <div class="tb-right">
+        <a href="prenota.html" class="tb-link">Prenota</a>
+        <a href="preventivo.html" class="tb-link">Calcola preventivo</a>
+      </div>
+    </div>
+  </div>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt="Go Move Rent logo" class="logo"/></a>
+    <nav class="menu" id="menu" aria-label="Navigazione principale">
+      <a data-active="index" href="index.html">Home</a>
+      <a data-active="auto" href="auto.html">Auto</a>
+      <a data-active="moto" href="moto.html">Scooter & Moto</a>
+      <a data-active="preventivo" href="preventivo.html">Preventivo</a>
+      <a data-active="prenota" href="prenota.html">Prenota</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main class="hero slim">
+  <div class="container">
+    <h1 class="title">Prenota ora</h1>
+    <p class="muted" id="vehicleChosen"></p>
+  </div>
+</main>
+<section><div class="container">
+  <form id="bookingForm" onsubmit="handleBooking(event)" class="card">
+    <div class="grid two">
+      <div><label for="pickup">Luogo di ritiro</label><input id="pickup" name="pickup" required value="Ercolano (NA)" readonly /></div>
+      <div><label for="dropoff">Luogo di riconsegna</label><input id="dropoff" name="dropoff" required value="Ercolano (NA)" readonly /></div>
+      <div><label for="start">Data e ora ritiro</label><input id="start" name="start" type="datetime-local" required /></div>
+      <div><label for="end">Data e ora riconsegna</label><input id="end" name="end" type="datetime-local" required /></div>
+      <div><label for="category">Categoria veicolo</label>
+        <select id="category" name="category" required>
+          <option value="city">City Car</option><option value="berlina">Berlina</option><option value="suv">SUV</option>
+          <option value="scooter">Scooter</option><option value="moto">Moto</option>
+        </select>
+      </div>
+      <div><label for="age">Età conducente</label><input id="age" name="age" type="number" min="18" max="85" required placeholder="30" /></div>
+    </div>
+    <div class="grid four options">
+      <label><input type="checkbox" id="opt_gps" /> Navigatore</label>
+      <label><input type="checkbox" id="opt_seat" /> Seggiolino bimbo</label>
+      <label><input type="checkbox" id="opt_add" /> Guidatore aggiuntivo</label>
+      <label><input type="checkbox" id="opt_kasko" /> Kasko totale</label>
+    </div>
+    <button class="btn primary" type="submit">Verifica disponibilità</button>
+    <p id="formStatus" class="muted" role="status" aria-live="polite"></p>
+  </form>
+</div></section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <img src="assets/logo.png" alt="Go Move Rent logo" class="logo footer-logo"/>
+      <p class="muted">Ritiro e riconsegna: <b>Ercolano (NA)</b>.<br/>Assistenza 7/7.</p>
+    </div>
+    <div>
+      <h4>Servizi</h4>
+      <ul>
+        <li><a href="auto.html">Noleggio auto</a></li>
+        <li><a href="moto.html">Scooter & Moto</a></li>
+        <li><a href="preventivo.html">Preventivo</a></li>
+        <li><a href="prenota.html">Prenota</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contatti</h4>
+      <ul>
+        <li><a href="tel:+39000000000">+39 000 000 000</a></li>
+        <li><a href="mailto:info@gomove.it">info@gomove.it</a></li>
+        <li>Ercolano (NA)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container foot-note">
+    © <span id="year"></span> Go Move s.r.l. — P.IVA 00994550945 • <a href="#top">Torna su ↑</a>
+  </div>
+</footer>
+<script src="assets/script.js"></script>
+</body>
+</html>
