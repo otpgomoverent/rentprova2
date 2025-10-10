@@ -164,19 +164,47 @@
   <section id="flotta">
     <div class="container">
       <h2 class="section-title">La nostra flotta</h2>
-      <p class="section-sub">Dalle city car ai SUV, fino ai veicoli commerciali. Sempre recenti e manutenuti.</p>
-      <div class="grid cards">
+      <p class="section-sub">Consulta i veicoli disponibili e prenota in un click. Prezzi al giorno, IVA inclusa.</p>
+
+      <div class="grid cards" style="grid-template-columns: repeat(3, 1fr);">
         <article class="card">
-          <h3>City Car</h3>
-          <p class="muted">Perfette in città, consumi ridotti, facili da parcheggiare. Esempi: Fiat 500, Toyota Aygo.</p>
+          <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1200&auto=format&fit=crop" alt="Fiat Panda bianca" style="width:100%; border-radius:12px; aspect-ratio: 16/10; object-fit: cover;" />
+          <h3>Fiat Panda</h3>
+          <p class="muted">City car • benzina</p>
+          <p><b>€ 40/giorno</b></p>
+          <div class="cta"><button class="btn primary" type="button" onclick="chooseVehicle('Fiat Panda', 40, 'city')">Prenota questo</button></div>
         </article>
+
         <article class="card">
-          <h3>Berline</h3>
-          <p class="muted">Comfort per i viaggi lunghi e transfer business. Esempi: Audi A4, BMW Serie 3.</p>
+          <img src="https://images.unsplash.com/photo-1613682794835-fd9b73f8c812?q=80&w=1200&auto=format&fit=crop" alt="Smart Forfour nera" style="width:100%; border-radius:12px; aspect-ratio: 16/10; object-fit: cover;" />
+          <h3>Smart ForFour (auto)</h3>
+          <p class="muted">Cambio automatico • city</p>
+          <p><b>€ 60/giorno</b></p>
+          <div class="cta"><button class="btn primary" type="button" onclick="chooseVehicle('Smart ForFour (auto)', 60, 'city')">Prenota questo</button></div>
         </article>
+
         <article class="card">
-          <h3>SUV & Crossover</h3>
-          <p class="muted">Spazio per famiglia e bagagli, perfette per weekend e montagna. Esempi: Nissan Qashqai, Kia Sportage.</p>
+          <img src="https://images.unsplash.com/photo-1549921296-3b4a6b941b79?q=80&w=1200&auto=format&fit=crop" alt="Jeep Renegade arancione" style="width:100%; border-radius:12px; aspect-ratio: 16/10; object-fit: cover;" />
+          <h3>Jeep Renegade</h3>
+          <p class="muted">SUV • spaziosa</p>
+          <p><b>€ 60/giorno</b></p>
+          <div class="cta"><button class="btn primary" type="button" onclick="chooseVehicle('Jeep Renegade', 60, 'suv')">Prenota questo</button></div>
+        </article>
+
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop" alt="SYM Symphony 125 scooter" style="width:100%; border-radius:12px; aspect-ratio: 16/10; object-fit: cover;" />
+          <h3>SYM Symphony 125</h3>
+          <p class="muted">Scooter 125</p>
+          <p><b>€ 30/giorno</b></p>
+          <div class="cta"><button class="btn primary" type="button" onclick="chooseVehicle('SYM Symphony 125', 30, 'city')">Prenota questo</button></div>
+        </article>
+
+        <article class="card">
+          <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop" alt="Honda X-ADV 750" style="width:100%; border-radius:12px; aspect-ratio: 16/10; object-fit: cover;" />
+          <h3>Honda X-ADV 750</h3>
+          <p class="muted">Crossover • 750cc</p>
+          <p><b>€ 80/giorno</b></p>
+          <div class="cta"><button class="btn primary" type="button" onclick="chooseVehicle('Honda X-ADV 750', 80, 'suv')">Prenota questo</button></div>
         </article>
       </div>
     </div>
@@ -260,6 +288,7 @@
   <section id="prenota">
     <div class="container">
       <h2 class="section-title">Prenota ora</h2>
+      <p id="vehicleChosen" class="muted" style="margin: 6px 0 12px 0;"></p>
       <p class="section-sub">Inserisci i dati del tuo viaggio e verifica la disponibilità in tempo reale (demo).</p>
       <form id="contactForm" onsubmit="handleBooking(event)">
         <div>
@@ -365,20 +394,20 @@
     }
     function renderQuote(result){
       const box = document.getElementById('quoteResult');
-      const rows = result.items.map(i=>`<tr><td>${i.voce}</td><td style="text-align:right">${euro(i.importo)}</td></tr>`).join('');
+      const rows = result.items.map(i=>`<tr><td>${i.voce}</td><td style=\"text-align:right\">${euro(i.importo)}</td></tr>`).join('');
       box.innerHTML = `
-        <div class="card">
+        <div class=\"card\">
           <h3>Stima totale</h3>
-          <table class="breakdown">
+          <table class=\"breakdown\">
             <thead><tr><th>Voce</th><th>Importo</th></tr></thead>
             <tbody>${rows}</tbody>
             <tfoot>
-              <tr><th>Imponibile</th><th style="text-align:right">${euro(result.imponibile)}</th></tr>
-              <tr><th>IVA (22%)</th><th style="text-align:right">${euro(result.iva)}</th></tr>
-              <tr><th style="font-size:18px">Totale</th><th style="text-align:right; font-size:18px">${euro(result.totale)}</th></tr>
+              <tr><th>Imponibile</th><th style=\"text-align:right\">${euro(result.imponibile)}</th></tr>
+              <tr><th>IVA (22%)</th><th style=\"text-align:right\">${euro(result.iva)}</th></tr>
+              <tr><th style=\"font-size:18px\">Totale</th><th style=\"text-align:right; font-size:18px\">${euro(result.totale)}</th></tr>
             </tfoot>
           </table>
-          <p class="muted" style="margin-top:8px">*Stima non vincolante. Tariffe soggette a disponibilità e verifica documenti.</p>
+          <p class=\"muted\" style=\"margin-top:8px\">*Stima non vincolante. Tariffe soggette a disponibilità e verifica documenti.</p>
         </div>`;
     }
     function handlePreventivo(e){
@@ -429,6 +458,16 @@
       ['q_gps','q_seat','q_add','q_kasko'].forEach(id=>{ const el=document.getElementById(id); if(el && p.get(id)==='1') el.checked=true; });
     })();
 
+    // --- Scelta veicolo dalla flotta → precompila prenotazione ---
+    function chooseVehicle(name, price, category){
+      const msg = document.getElementById('vehicleChosen');
+      if(msg) msg.textContent = `Veicolo selezionato: ${name} — ${euro(price)}/giorno`;
+      const cat = document.querySelector('#prenota select#category');
+      if (cat) cat.value = category;
+      document.querySelector('a[href="#prenota"]').click?.();
+      document.getElementById('prenota')?.scrollIntoView({ behavior: 'smooth' });
+    }
+
     // --- Prenotazione demo esistente ---
     function handleBooking(e){
       e.preventDefault();
@@ -452,7 +491,5 @@
       form.reset();
     }
   </script>
-</body>
-</html>
 </body>
 </html>
