@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Preventivo — Go Move Rent</title>
+  <meta name="description" content="Calcolo preventivo noleggio a Ercolano (NA).">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body data-page="preventivo">
+<header>
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt="Go Move Rent logo" class="logo"/></a>
+    <nav class="menu" id="menu" aria-label="Navigazione principale">
+      <a data-active="index" href="index.html">Home</a>
+      <a data-active="auto" href="auto.html">Auto</a>
+      <a data-active="moto" href="moto.html">Scooter & Moto</a>
+      <a data-active="preventivo" href="preventivo.html">Preventivo</a>
+      <a data-active="prenota" href="prenota.html">Prenota</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main class="hero plain">
+  <div class="container">
+    <h1 class="title">Preventivo</h1>
+    <p class="lead">Calcola una stima in pochi secondi. Ritiro e riconsegna: <b>Ercolano (NA)</b>.</p>
+  </div>
+</main>
+<section><div class="container">
+  <form id="quoteForm" onsubmit="handlePreventivo(event)" class="card">
+    <div class="grid two">
+      <div><label for="q_start">Data e ora ritiro</label><input id="q_start" name="start" type="datetime-local" required /></div>
+      <div><label for="q_end">Data e ora riconsegna</label><input id="q_end" name="end" type="datetime-local" required /></div>
+      <div><label for="q_category">Categoria</label>
+        <select id="q_category" name="category" required>
+          <option value="city">City Car</option>
+          <option value="berlina">Berlina</option>
+          <option value="suv">SUV</option>
+          <option value="scooter">Scooter</option>
+          <option value="moto">Moto</option>
+        </select>
+      </div>
+      <div><label for="q_age">Età conducente</label><input id="q_age" name="age" type="number" min="18" max="85" required placeholder="30" /></div>
+    </div>
+    <div class="grid four options">
+      <label><input type="checkbox" id="q_gps" /> Navigatore</label>
+      <label><input type="checkbox" id="q_seat" /> Seggiolino bimbo</label>
+      <label><input type="checkbox" id="q_add" /> Guidatore aggiuntivo</label>
+      <label><input type="checkbox" id="q_kasko" /> Kasko totale</label>
+    </div>
+    <div class="cta">
+      <button class="btn primary" type="submit">Calcola preventivo</button>
+      <button class="btn" type="button" onclick="copyQuoteLink()">Copia link</button>
+    </div>
+    <div id="quoteResult"></div>
+  </form>
+</div></section>
+
+<footer>
+  <div class="container">
+    © <span id="year"></span> Go Move s.r.l. — P.IVA 00994550945 • <a href="#top">Torna su ↑</a>
+  </div>
+</footer>
+<script src="assets/script.js"></script>
+</body>
+</html>

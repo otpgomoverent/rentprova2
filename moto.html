@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Scooter & Moto — Go Move Rent</title>
+  <meta name="description" content="Scooter e moto disponibili a Ercolano (NA).">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=1">
+</head>
+<body data-page="moto">
+<header>
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt="Go Move Rent logo" class="logo"/></a>
+    <nav class="menu" id="menu" aria-label="Navigazione principale">
+      <a data-active="index" href="index.html">Home</a>
+      <a data-active="auto" href="auto.html">Auto</a>
+      <a data-active="moto" href="moto.html">Scooter & Moto</a>
+      <a data-active="preventivo" href="preventivo.html">Preventivo</a>
+      <a data-active="prenota" href="prenota.html">Prenota</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main class="hero plain">
+  <div class="container">
+    <h1 class="title">Scooter & Moto</h1>
+    <p class="lead">Due ruote per muoverti con agilità — Ercolano (NA).</p>
+  </div>
+</main>
+<section><div class="container">
+<div class="grid cards">
+
+<article class="card vehicle">
+  <img src="https://www.rubei.it/wp-content/uploads/2024/06/imgi_62_NEW-SYMPHONY_WH-8028P_RED-SEAT_L45-1.webp" alt="SYM Symphony 125 rosso" class="vehicle-img" loading="lazy"/>
+  <div class="vehicle-info">
+    <h3>SYM Symphony 125</h3>
+    <p class="muted">Scooter</p>
+    <p class="price"><b>€ 30/giorno</b></p>
+    <div class="cta">
+      <a class="btn primary" href="prenota.html?vehicle=SYM%20Symphony%20125&price=30&category=scooter">Prenota questo</a>
+      <a class="btn ghost" href="preventivo.html?cat=scooter&preset=1">Calcola</a>
+    </div>
+  </div>
+</article>
+
+
+<article class="card vehicle">
+  <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop" alt="Honda X-ADV 750" class="vehicle-img" loading="lazy"/>
+  <div class="vehicle-info">
+    <h3>Honda X-ADV 750</h3>
+    <p class="muted">Moto</p>
+    <p class="price"><b>€ 80/giorno</b></p>
+    <div class="cta">
+      <a class="btn primary" href="prenota.html?vehicle=Honda%20X-ADV%20750&price=80&category=moto">Prenota questo</a>
+      <a class="btn ghost" href="preventivo.html?cat=moto&preset=1">Calcola</a>
+    </div>
+  </div>
+</article>
+
+</div>
+</div></section>
+
+<footer>
+  <div class="container">
+    © <span id="year"></span> Go Move s.r.l. — P.IVA 00994550945 • <a href="#top">Torna su ↑</a>
+  </div>
+</footer>
+<script src="assets/script.js"></script>
+</body>
+</html>
