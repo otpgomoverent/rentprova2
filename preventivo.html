@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Preventivo — Go Move Rent</title>
+  <meta name="description" content="Calcolo preventivo noleggio a Ercolano (NA).">
+  <link rel="icon" href="assets/logo.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=1">
+  <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prenota — Go Move</title>
+  <link rel="stylesheet" href="assets/style.css?v=3">
+  <style>
+  /* --- Smart Tables (inline) --- */
+  .smart-table { width:100%; border-collapse: separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid rgba(10,16,32,.10); background:#fff; box-shadow: 0 10px 30px rgba(10,16,32,.08); }
+  .smart-table thead th { position: sticky; top:0; background:#f6f8fc; color:#1f2a44; text-align:left; font-weight:700; padding:10px; border-bottom:1px solid rgba(10,16,32,.10); cursor:pointer }
+  .smart-table tbody td { padding:10px; border-bottom:1px solid rgba(10,16,32,.10) }
+  .smart-table tfoot th { padding:10px; background:#f6f8fc; border-top:1px solid rgba(10,16,32,.10); text-align:right }
+  .smart-actions { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 }
+  .smart-actions .btn { padding:8px 12px }
+  .zebra tbody tr:nth-child(odd) { background:#fbfdff }
+  .number { text-align:right }
+  .badge-ok { display:inline-block; padding:2px 8px; border-radius:999px; background:#e8fff4; color:#047857; border:1px solid #b6f0d2; font-weight:700; font-size:12px }
+  .badge-warn { display:inline-block; padding:2px 8px; border-radius:999px; background:#fff7ed; color:#b45309; border:1px solid #fed7aa; font-weight:700; font-size:12px }
+  </style>
+
+  <!-- Smart Tables styles (inline) -->
+  <style>
+  .smart-table { width:100%; border-collapse: separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid rgba(10,16,32,.10); background:#fff; box-shadow: 0 10px 30px rgba(10,16,32,.08); }
+  .smart-table thead th { position: sticky; top:0; background:#f6f8fc; color:#1f2a44; text-align:left; font-weight:700; padding:10px; border-bottom:1px solid rgba(10,16,32,.10); cursor:pointer }
+  .smart-table tbody td { padding:10px; border-bottom:1px solid rgba(10,16,32,.10) }
+  .smart-table tfoot th { padding:10px; background:#f6f8fc; border-top:1px solid rgba(10,16,32,.10); text-align:right }
+  .smart-actions { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 }
+  .smart-actions .btn { padding:8px 12px }
+  .zebra tbody tr:nth-child(odd) { background:#fbfdff }
+  .number { text-align:right }
+  .badge-ok { display:inline-block; padding:2px 8px; border-radius:999px; background:#e8fff4; color:#047857; border:1px solid #b6f0d2; font-weight:700; font-size:12px }
+  .badge-warn { display:inline-block; padding:2px 8px; border-radius:999px; background:#fff7ed; color:#b45309; border:1px solid #fed7aa; font-weight:700; font-size:12px }
+  </style>
+
+</head>
+<body>
+
+
+  <!-- Smart Tables styles (inline) -->
+  <style>
+  .smart-table { width:100%; border-collapse: separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid rgba(10,16,32,.10); background:#fff; box-shadow: 0 10px 30px rgba(10,16,32,.08); }
+  .smart-table thead th { position: sticky; top:0; background:#f6f8fc; color:#1f2a44; text-align:left; font-weight:700; padding:10px; border-bottom:1px solid rgba(10,16,32,.10); cursor:pointer }
+  .smart-table tbody td { padding:10px; border-bottom:1px solid rgba(10,16,32,.10) }
+  .smart-table tfoot th { padding:10px; background:#f6f8fc; border-top:1px solid rgba(10,16,32,.10); text-align:right }
+  .smart-actions { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 }
+  .smart-actions .btn { padding:8px 12px }
+  .zebra tbody tr:nth-child(odd) { background:#fbfdff }
+  .number { text-align:right }
+  .badge-ok { display:inline-block; padding:2px 8px; border-radius:999px; background:#e8fff4; color:#047857; border:1px solid #b6f0d2; font-weight:700; font-size:12px }
+  .badge-warn { display:inline-block; padding:2px 8px; border-radius:999px; background:#fff7ed; color:#b45309; border:1px solid #fed7aa; font-weight:700; font-size:12px }
+  </style>
+
+</head>
+<body data-page="preventivo">
+  <div class="topbar">
+    <div class="container topbar-row">
+      <div class="tb-left">Contatti: <a href="tel:+39000000000">+39 000 000 000</a> • <a href="mailto:info@gomove.it">info@gomove.it</a></div>
+      <div class="tb-right">
+        <a href="prenota.html" class="tb-link">Prenota</a>
+        <a href="preventivo.html" class="tb-link">Calcola preventivo</a>
+      </div>
+    </div>
+  </div>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="brand"><img src="assets/logo.png" alt="Go Move Rent logo" class="logo"/></a>
+    <nav class="menu" id="menu" aria-label="Navigazione principale">
+      <a data-active="index" href="index.html">Home</a>
+      <a data-active="auto" href="auto.html">Auto</a>
+      <a data-active="moto" href="moto.html">Scooter & Moto</a>
+      <a data-active="preventivo" href="preventivo.html">Preventivo</a>
+      <a data-active="prenota" href="prenota.html">Prenota</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Apri menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<main class="hero slim">
+  <div class="container">
+    <h1 class="title">Preventivo</h1>
+    <p class="lead">Calcola una stima in pochi secondi. Ritiro e riconsegna: <b>Ercolano (NA)</b>.</p>
+  </div>
+</main>
+<section><div class="container">
+  <form id="quoteForm" onsubmit="handlePreventivo(event)" class="card">
+    <div class="grid two">
+      <div><label for="q_start">Data e ora ritiro</label><input id="q_start" name="start" type="datetime-local" required /></div>
+      <div><label for="q_end">Data e ora riconsegna</label><input id="q_end" name="end" type="datetime-local" required /></div>
+      <div><label for="q_category">Categoria</label>
+        <select id="q_category" name="category" required>
+          <option value="city">City Car</option>
+          <option value="berlina">Berlina</option>
+          <option value="suv">SUV</option>
+          <option value="scooter">Scooter</option>
+          <option value="moto">Moto</option>
+        </select>
+      </div>
+      <div><label for="q_age">Età conducente</label><input id="q_age" name="age" type="number" min="18" max="85" required placeholder="30" /></div>
+    </div>
+    <div class="grid four options">
+      <label><input type="checkbox" id="q_gps" /> Navigatore</label>
+      <label><input type="checkbox" id="q_seat" /> Seggiolino bimbo</label>
+      <label><input type="checkbox" id="q_add" /> Guidatore aggiuntivo</label>
+      <label><input type="checkbox" id="q_kasko" /> Kasko totale</label>
+    </div>
+    <div class="cta">
+      <button class="btn primary" type="submit">Calcola preventivo</button>
+      <button class="btn" type="button" onclick="copyQuoteLink()">Copia link</button>
+    </div>
+    <div id="quoteResult"></div>
+  </form>
+  <!-- Preventivo smart -->
+<div id="quoteResult"></div>
+</div></section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <img src="assets/logo.png" alt="Go Move Rent logo" class="logo footer-logo"/>
+      <p class="muted">Ritiro e riconsegna: <b>Ercolano (NA)</b>.<br/>Assistenza 7/7.</p>
+    </div>
+    <div>
+      <h4>Servizi</h4>
+      <ul>
+        <li><a href="auto.html">Noleggio auto</a></li>
+        <li><a href="moto.html">Scooter & Moto</a></li>
+        <li><a href="preventivo.html">Preventivo</a></li>
+        <li><a href="prenota.html">Prenota</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Contatti</h4>
+      <ul>
+        <li><a href="tel:+39000000000">+39 000 000 000</a></li>
+        <li><a href="mailto:info@gomove.it">info@gomove.it</a></li>
+        <li>Ercolano (NA)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container foot-note">
+    © <span id="year"></span> Go Move s.r.l. — P.IVA 00994550945 • <a href="#top">Torna su ↑</a>
+  </div>
+</footer>
+<script src="assets/script.js"></script>
+  <script>
+  <script src="assets/script.js?v=3" defer></script>
+  </script>
+
+  <!-- Smart Tables script (inline) -->
+  <script>
+  function euro(n){ try { return (n||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'});}catch(e){return n} }
+  function smartSortTable(table, colIndex, numeric=false){
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const dir = table.getAttribute('data-sortdir') === 'asc' ? 'desc' : 'asc';
+    rows.sort((a,b)=>{
+      const ta = a.children[colIndex].innerText.trim();
+      const tb = b.children[colIndex].innerText.trim();
+      if(numeric){
+        const na = parseFloat(ta.replace(/[€\s\.]/g,'').replace(',', '.')) || 0;
+        const nb = parseFloat(tb.replace(/[€\s\.]/g,'').replace(',', '.')) || 0;
+        return dir==='asc' ? na-nb : nb-na;
+      } else {
+        return dir==='asc' ? ta.localeCompare(tb) : tb.localeCompare(ta);
+      }
+    });
+    rows.forEach(r=>tbody.appendChild(r));
+    table.setAttribute('data-sortdir', dir);
+  }
+  function tableToCSV(table){
+    const rows = table.querySelectorAll('tr');
+    return Array.from(rows).map(tr => Array.from(tr.children).map(td => `"$\{td.innerText.replace(/"/g,'""')\}"`).join(',')).join('\n');
+  }
+  function copySmartTable(tableId){
+    const table = document.getElementById(tableId);
+    const csv = tableToCSV(table);
+    navigator.clipboard.writeText(csv).then(()=>alert('Tabella copiata (CSV negli appunti).'));
+  }
+  function downloadSmartTable(tableId, filename='tabella.csv'){
+    const table = document.getElementById(tableId);
+    const csv = tableToCSV(table);
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+  }
+  function renderQuoteSmart(result){
+    const box = document.getElementById('quoteResult');
+    if(!box) return;
+    const rows = (result.items||[]).map(i=>`<tr><td>$\{i.voce||''\}</td><td class="number">$\{euro(i.importo||0)\}</td></tr>`).join('');
+    box.innerHTML = `
+      <div class="smart-actions">
+        <button class="btn" onclick="copySmartTable('tblQuote')">Copia (CSV)</button>
+        <button class="btn" onclick="downloadSmartTable('tblQuote','preventivo.csv')">Scarica CSV</button>
+      </div>
+      <table class="smart-table zebra" id="tblQuote" data-sortdir="asc">
+        <thead>
+          <tr>
+            <th onclick="smartSortTable(this.closest('table'),0,false)">Voce</th>
+            <th onclick="smartSortTable(this.closest('table'),1,true)">Importo</th>
+          </tr>
+        </thead>
+        <tbody>$\{rows\}</tbody>
+        <tfoot>
+          <tr><th>Imponibile</th><th class="number">$\{euro(result.imponibile||0)\}</th></tr>
+          <tr><th>IVA (22%)</th><th class="number">$\{euro(result.iva||0)\}</th></tr>
+          <tr><th style="font-size:18px">Totale</th><th class="number" style="font-size:18px">$\{euro(result.totale||0)\}</th></tr>
+        </tfoot>
+      </table>`;
+  }
+  function renderBookingSmart(summary){
+    const box = document.getElementById('bookingSummary');
+    if(!box) return;
+    const rows = (summary.rows||[]).map(r=>`<tr><td>$\{r.k\}</td><td class="number">$\{r.v\}</td></tr>`).join('');
+    box.innerHTML = `
+      <div class="smart-actions">
+        <span class="$\{summary.ok ? 'badge-ok':'badge-warn'\}">$\{summary.ok ? 'Disponibilità trovata' : 'Non disponibile'\}</span>
+        <button class="btn" onclick="copySmartTable('tblBooking')">Copia (CSV)</button>
+        <button class="btn" onclick="downloadSmartTable('tblBooking','prenotazione.csv')">Scarica CSV</button>
+      </div>
+      <table class="smart-table zebra" id="tblBooking" data-sortdir="asc">
+        <thead>
+          <tr><th onclick="smartSortTable(this.closest('table'),0,false)">Voce</th><th onclick="smartSortTable(this.closest('table'),1,true)">Valore</th></tr>
+        </thead>
+        <tbody>$\{rows\}</tbody>
+        <tfoot>
+          <tr><th>Totale</th><th class="number">$\{euro(summary.totale||0)\}</th></tr>
+        </tfoot>
+      </table>`;
+  }
+  (function(){
+    if(typeof handlePreventivo === 'function'){
+      const _h = handlePreventivo;
+      window.handlePreventivo = function(e){
+        e && e.preventDefault && e.preventDefault();
+        _h.apply(this, arguments);
+        if(window._lastQuote){ renderQuoteSmart(window._lastQuote); }
+      };
+    }
+    if(typeof handleBooking === 'function'){
+      const _b = handleBooking;
+      window.handleBooking = function(e){
+        e && e.preventDefault && e.preventDefault();
+        try{ _b.apply(this, arguments);}catch(err){}
+        try{
+          const form = (e && e.target) || document.querySelector('#bookingForm');
+          const start = new Date(form?.start?.value), end = new Date(form?.end?.value);
+          const hours = Math.ceil((end-start)/36e5);
+          const days = Math.max(1, Math.ceil(hours/24));
+          const age = Number(form?.age?.value || 0);
+          const category = form?.category?.value || '';
+          let daily = (typeof basePriceFor==='function') ? basePriceFor(category) : 50;
+          if (age && age < 25) daily += 12;
+          let totale = daily * days;
+          if (document.getElementById('opt_gps')?.checked) totale += 5 * days;
+          if (document.getElementById('opt_seat')?.checked) totale += 4 * days;
+          if (document.getElementById('opt_add')?.checked)  totale += 6 * days;
+          if (document.getElementById('opt_kasko')?.checked) totale += 15 * days;
+          const summary = {
+            ok:true, totale,
+            rows: [
+              {k:'Categoria', v: category},
+              {k:'Giorni', v: String(days)},
+              {k:'Età conducente', v: String(age||'')},
+              {k:'Navigatore', v: document.getElementById('opt_gps')?.checked ? 'Sì':'No'},
+              {k:'Seggiolino bimbo', v: document.getElementById('opt_seat')?.checked ? 'Sì':'No'},
+              {k:'Guidatore aggiuntivo', v: document.getElementById('opt_add')?.checked ? 'Sì':'No'},
+              {k:'Kasko totale', v: document.getElementById('opt_kasko')?.checked ? 'Sì':'No'}
+            ]
+          };
+          renderBookingSmart(summary);
+        }catch(err){}
+      };
+    }
+  })();
+  </script>
+
+</body>
+</html>
