@@ -247,36 +247,6 @@
           <tr><th style="font-size:18px">Totale</th><th class="number" style="font-size:18px">$\{euro(result.totale||0)\}</th></tr>
         </tfoot>
       </table>`;
-  }
-  function renderBookingSmart(summary){
-    const box = document.getElementById('bookingSummary');
-    if(!box) return;
-    const rows = (summary.rows||[]).map(r=>`<tr><td>$\{r.k\}</td><td class="number">$\{r.v\}</td></tr>`).join('');
-    box.innerHTML = `
-      <div class="smart-actions">
-        <span class="$\{summary.ok ? 'badge-ok':'badge-warn'\}">$\{summary.ok ? 'Disponibilità trovata' : 'Non disponibile'\}</span>
-        <button class="btn" onclick="copySmartTable('tblBooking')">Copia (CSV)</button>
-        <button class="btn" onclick="downloadSmartTable('tblBooking','prenotazione.csv')">Scarica CSV</button>
-      </div>
-      <table class="smart-table zebra" id="tblBooking" data-sortdir="asc">
-        <thead>
-          <tr><th onclick="smartSortTable(this.closest('table'),0,false)">Voce</th><th onclick="smartSortTable(this.closest('table'),1,true)">Valore</th></tr>
-        </thead>
-        <tbody>$\{rows\}</tbody>
-        <tfoot>
-          <tr><th>Totale</th><th class="number">$\{euro(summary.totale||0)\}</th></tr>
-        </tfoot>
-      </table>`;
-  }
-  (function(){
-    if(typeof handlePreventivo === 'function'){
-      const _h = handlePreventivo;
-      window.handlePreventivo = function(e){
-        e && e.preventDefault && e.preventDefault();
-        _h.apply(this, arguments);
-        if(window._lastQuote){ renderQuoteSmart(window._lastQuote); }
-      };
-    }
   </script>
 
 </body>
