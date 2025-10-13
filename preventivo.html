@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Go Move Rent – Preventivo</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/script.js"></script>
+</head>
+<body data-page="preventivo">
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">Go Move Rent</a>
+      <nav class="nav">
+        <a href="auto.html">Auto</a>
+        <a href="moto.html">Scooter & Moto</a>
+        <a class="active" href="preventivo.html">Preventivo</a>
+        <a href="prenota.html">Prenota</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Calcola il tuo preventivo</h1>
+
+    <form id="quoteForm" class="card form-grid">
+      <div>
+        <label>Ritiro</label>
+        <input type="datetime-local" id="start" required>
+      </div>
+      <div>
+        <label>Riconsegna</label>
+        <input type="datetime-local" id="end" required>
+      </div>
+      <div>
+        <label>Categoria</label>
+        <select id="category" required>
+          <option value="city">City</option>
+          <option value="berlina">Berlina</option>
+          <option value="suv">SUV</option>
+          <option value="scooter">Scooter</option>
+          <option value="moto">Moto</option>
+        </select>
+      </div>
+      <div>
+        <label>Modello (opzionale)</label>
+        <select id="model">
+          <option value="">—</option>
+          <option value="Fiat Panda">Fiat Panda</option>
+          <option value="Smart ForFour (automatico)">Smart ForFour (automatico)</option>
+          <option value="Jeep Renegade">Jeep Renegade</option>
+          <option value="SYM Symphony 125">SYM Symphony 125</option>
+          <option value="Honda X-ADV 750">Honda X-ADV 750</option>
+        </select>
+      </div>
+      <div>
+        <label>Età conducente</label>
+        <input type="number" id="age" min="18" max="90" value="30" required>
+      </div>
+
+      <fieldset class="col-span-2">
+        <legend>Extra (costo giornaliero)</legend>
+        <label><input type="checkbox" class="extra" data-key="gps"> Navigatore (5 €)</label>
+        <label><input type="checkbox" class="extra" data-key="seggiolino"> Seggiolino bimbo (4 €)</label>
+        <label><input type="checkbox" class="extra" data-key="second_driver"> Conducente aggiuntivo (6 €)</label>
+      </fieldset>
+
+      <div class="col-span-2">
+        <button type="submit" class="btn">Calcola</button>
+      </div>
+    </form>
+
+    <div id="quoteResult" class="card" style="display:none"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <small>© <span id="year"></span> Go Move Rent</small>
+    </div>
+  </footer>
+</body>
+</html>
