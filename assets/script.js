@@ -32,63 +32,105 @@ function copyQuoteLink(){ const u=new URL(window.location.href); const set=(k,v)
 
 function handleBooking(e){ e.preventDefault(); const form=e.target; const start=new Date(form.start.value); const end=new Date(form.end.value); const status=document.getElementById('formStatus'); if(end<=start){ status.textContent='Controlla le date.'; return; } const hours=Math.ceil((end-start)/36e5); const days=Math.max(1, Math.ceil(hours/24)); const urlParams=new URLSearchParams(window.location.search); let daily=(function(){ const vh=urlParams.get('vehicle'); if(vh && modelPrices[vh]!=null) return modelPrices[vh]; return basePriceFor(form.category.value); })(); let totale=daily*days; if (document.getElementById('opt_gps')?.checked) totale+=5*days; if (document.getElementById('opt_seat')?.checked) totale+=4*days; if (document.getElementById('opt_add')?.checked) totale+=6*days; if (document.getElementById('opt_kasko')?.checked) totale+=15*days; const age=Number(form.age.value||0); if(age && age<25) totale+=12*days; status.textContent=`Disponibilità trovata! Stima: ${euro(totale)} per ${days} giorno/i. Sede: Ercolano (NA).`; form.reset(); }
 
-// === Smart Tables helpers ===
-function daysBetween(a,b){
-  const ms = (new Date(b) - new Date(a));
-  if (isNaN(ms) || ms<=0) return 0;
-  return Math.ceil(ms / (1000*60*60*24));
-}
-function euro(n){return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n||0)}
-function baseRate(cat){return {"City Car":40,"Berlina":55,"SUV":60,"Scooter":30,"Moto":80}[cat]||40}
-
-// Preventivo
+// === MINI PREVENTIVO (usa il motore principale) ===
+// Alcune pagine chiamano "calcQuote()" per il mini: lo lasciamo come alias.
 window.calcQuote = function(){
   const pickup = document.getElementById('pv-pickup')?.value;
   const drop   = document.getElementById('pv-dropoff')?.value;
-  if(!pickup || !drop) { 
-    ['pv-days','pv-base','pv-extras','pv-total'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='—'; });
+  const catEl  = document.querySelector('input[name="pv-cat"]:checked');
+  const catLbl = catEl ? catEl.value : 'City Car';
+
+  // extra opzionali (se presenti): usa data-key="gps|seat|add|kasko"
+  const gps   = !!document.querySelector('.pv-extra[data-key="gps"]')?.checked;
+  const seat  = !!document.querySelector('.pv-extra[data-key="seat"]')?.checked;
+  const add   = !!document.querySelector('.pv-extra[data-key="add"]')?.checked;
+  const kasko = !!document.querySelector('.pv-extra[data-key="kasko"]')?.checked;
+
+  const outId = document.getElementById('pvResult') ? 'pvResult' : 'quoteResult';
+
+  if(!pickup || !drop){
+    const box = document.getElementById(outId);
+    if(box) box.innerHTML = '<p class="muted">Seleziona ritiro e riconsegna.</p>';
     return;
   }
-  const catEl = document.querySelector('input[name="pv-cat"]:checked');
-  const cat = catEl ? catEl.value : 'City Car';
-  const days = daysBetween(pickup, drop);
-  const base = baseRate(cat)*days;
-  let extrasPerDay = 0; document.querySelectorAll('.pv-extra:checked').forEach(x=>extrasPerDay += Number(x.dataset.price||0));
-  const extras = extrasPerDay*days;
-  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.textContent=val};
-  set('pv-days', days || '—'); set('pv-base', days?euro(base):'—'); set('pv-extras', days?euro(extras):'—'); set('pv-total', days?euro(base+extras):'—');
-}
-window.copyQuoteLink = function(){
-  const url = new URL(location.href);
-  const params = new URLSearchParams({
-    p:document.getElementById('pv-pickup')?.value||'',
-    d:document.getElementById('pv-dropoff')?.value||'',
-    cat:(document.querySelector('input[name="pv-cat"]:checked')||{}).value||'City Car',
-    age:document.getElementById('pv-age')?.value||''
-  });
-  navigator.clipboard.writeText(url.origin+url.pathname+'?'+params.toString());
-  alert('Link del preventivo copiato!');
-}
 
-// Prenota
+  const mapCat = (s)=>{
+    s = String(s).toLowerCase();
+    if(s.includes('berlina')) return 'berlina';
+    if(s.includes('suv')) return 'suv';
+    if(s.includes('scooter')) return 'scooter';
+    if(s.includes('moto')) return 'moto';
+    return 'city';
+  };
+
+  const data = {
+    start: new Date(pickup),
+    end:   new Date(drop),
+    category: mapCat(catLbl),
+    vehicle: '',
+    gps, seat, add, kasko,
+    days: daysBetween(new Date(pickup), new Date(drop))
+  };
+
+  const result = calcQuote(data);
+  renderQuote(result, outId);
+};
+
+// === PRENOTA (usa il motore principale) ===
 window.checkAvailability = function(){
-  const p = document.getElementById('pr-pickup')?.value;
-  const d = document.getElementById('pr-dropoff')?.value;
-  const cat = document.getElementById('pr-cat')?.value||'City Car';
-  const days = daysBetween(p,d);
-  let extras=0; document.querySelectorAll('.pr-extra:checked').forEach(x=>extras += Number(x.dataset.price||0));
-  const total = (baseRate(cat)+extras)*days;
+  const p   = document.getElementById('pr-pickup')?.value;
+  const d   = document.getElementById('pr-dropoff')?.value;
+  const cat = document.getElementById('pr-cat')?.value || 'City Car';
+
+  const gps   = !!document.querySelector('.pr-extra[data-key="gps"]')?.checked;
+  const seat  = !!document.querySelector('.pr-extra[data-key="seat"]')?.checked;
+  const add   = !!document.querySelector('.pr-extra[data-key="add"]')?.checked;
+  const kasko = !!document.querySelector('.pr-extra[data-key="kasko"]')?.checked;
+
+  const outId = document.getElementById('prResult') ? 'prResult' : 'quoteResult';
+
+  if(!p || !d){
+    const box = document.getElementById(outId);
+    if(box) box.innerHTML = '<p class="muted">Seleziona ritiro e riconsegna.</p>';
+    return;
+  }
+
+  const mapCat = (s)=>{
+    s = String(s).toLowerCase();
+    if(s.includes('berlina')) return 'berlina';
+    if(s.includes('suv')) return 'suv';
+    if(s.includes('scooter')) return 'scooter';
+    if(s.includes('moto')) return 'moto';
+    return 'city';
+  };
+
+  const data = {
+    start: new Date(p),
+    end:   new Date(d),
+    category: mapCat(cat),
+    vehicle: '',
+    gps, seat, add, kasko,
+    days: daysBetween(new Date(p), new Date(d))
+  };
+
+  const result = calcQuote(data);
+  renderQuote(result, outId);
+
+  // Mantieni il badge "Disponibile" se la tabella esiste
   const statusCell = document.querySelector('#pr-result-rows tr:first-child td:last-child');
   if(statusCell) statusCell.innerHTML = '<span class="badge badge-ok">Disponibile</span>';
-  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.textContent=val};
-  set('pr-days', days || '—'); set('pr-total', days?euro(total):'—');
-}
+};
+
 window.resetPrenota = function(){
-  document.querySelectorAll('#prenota-title ~ table input').forEach(i=>{ if(i.type==='checkbox'){i.checked=false}else i.value='' });
+  document.querySelectorAll('#prenota-title ~ table input').forEach(i=>{
+    if(i.type==='checkbox'){ i.checked=false } else i.value='';
+  });
   const statusCell = document.querySelector('#pr-result-rows tr:first-child td:last-child');
   if(statusCell) statusCell.innerHTML = '<span class="badge badge-warn">In attesa</span>';
-  ['pr-days','pr-total'].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent='—'});
-}
+  const box = document.getElementById('prResult') || document.getElementById('quoteResult');
+  if(box) box.innerHTML = '';
+};
+
 window.sendBooking = function(){
   alert('Richiesta inviata! Ti contatteremo per conferma.');
-}
+};
