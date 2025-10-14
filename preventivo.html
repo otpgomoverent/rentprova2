@@ -144,34 +144,6 @@
     </section>
   </div>
 </main>
-<section><div class="container">
-  <form id="quoteForm" onsubmit="handlePreventivo(event)" class="card">
-    <div class="grid two">
-      <div><label for="q_start">Data e ora ritiro</label><input id="q_start" name="start" type="datetime-local" required /></div>
-      <div><label for="q_end">Data e ora riconsegna</label><input id="q_end" name="end" type="datetime-local" required /></div>
-      <div><label for="q_category">Categoria</label>
-        <select id="q_category" name="category" required>
-          <option value="city">City Car</option>
-          <option value="berlina">Berlina</option>
-          <option value="suv">SUV</option>
-          <option value="scooter">Scooter</option>
-          <option value="moto">Moto</option>
-        </select>
-      </div>
-      <div><label for="q_age">Età conducente</label><input id="q_age" name="age" type="number" min="18" max="85" required placeholder="30" /></div>
-    </div>
-    <div class="grid four options">
-      <label><input type="checkbox" id="q_gps" /> Navigatore</label>
-      <label><input type="checkbox" id="q_seat" /> Seggiolino bimbo</label>
-      <label><input type="checkbox" id="q_add" /> Guidatore aggiuntivo</label>
-      <label><input type="checkbox" id="q_kasko" /> Kasko totale</label>
-    </div>
-    <div class="cta">
-      <button class="btn primary" type="submit">Calcola preventivo</button>
-      <button class="btn" type="button" onclick="copyQuoteLink()">Copia link</button>
-    </div>
-    <div id="quoteResult"></div>
-  </form>
   <!-- Preventivo smart -->
 <div id="quoteResult"></div>
 </div></section>
