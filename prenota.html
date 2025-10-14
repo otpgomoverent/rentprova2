@@ -124,30 +124,6 @@
     </section>
   </div>
 </main>
-<section><div class="container">
-  <form id="bookingForm" onsubmit="handleBooking(event)" class="card">
-    <div class="grid two">
-      <div><label for="pickup">Luogo di ritiro</label><input id="pickup" name="pickup" required value="Ercolano (NA)" readonly /></div>
-      <div><label for="dropoff">Luogo di riconsegna</label><input id="dropoff" name="dropoff" required value="Ercolano (NA)" readonly /></div>
-      <div><label for="start">Data e ora ritiro</label><input id="start" name="start" type="datetime-local" required /></div>
-      <div><label for="end">Data e ora riconsegna</label><input id="end" name="end" type="datetime-local" required /></div>
-      <div><label for="category">Categoria veicolo</label>
-        <select id="category" name="category" required>
-          <option value="city">City Car</option><option value="berlina">Berlina</option><option value="suv">SUV</option>
-          <option value="scooter">Scooter</option><option value="moto">Moto</option>
-        </select>
-      </div>
-      <div><label for="age">Età conducente</label><input id="age" name="age" type="number" min="18" max="85" required placeholder="30" /></div>
-    </div>
-    <div class="grid four options">
-      <label><input type="checkbox" id="opt_gps" /> Navigatore</label>
-      <label><input type="checkbox" id="opt_seat" /> Seggiolino bimbo</label>
-      <label><input type="checkbox" id="opt_add" /> Guidatore aggiuntivo</label>
-      <label><input type="checkbox" id="opt_kasko" /> Kasko totale</label>
-    </div>
-    <button class="btn primary" type="submit">Verifica disponibilità</button>
-    <p id="formStatus" class="muted" role="status" aria-live="polite"></p>
-  </form>
   <!-- Riepilogo smart -->
 <div id="bookingSummary"></div>
 </div></section>
