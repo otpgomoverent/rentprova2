@@ -1,232 +1,94 @@
 (function(){
-  // === Nav toggle & active link ===
-  const toggle = document.getElementById('menuToggle');
-  const menu = document.getElementById('menu');
-  if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-      const open = menu.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-  }
-  const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
-  const pageKey = document.body.getAttribute('data-page');
-  if (pageKey) {
-    document.querySelectorAll('nav.menu a').forEach(a => {
-      if (a.dataset.active === pageKey) a.classList.add('active');
-    });
-  }
+  const toggle=document.getElementById('menuToggle');
+  const menu=document.getElementById('menu');
+  if(toggle) toggle.addEventListener('click', ()=>{ const o=menu.classList.toggle('open'); toggle.setAttribute('aria-expanded', String(o)); });
+  const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+  const pageKey=document.body.getAttribute('data-page'); 
+  if(pageKey) { document.querySelectorAll('nav.menu a').forEach(a=>{ if(a.dataset.active===pageKey) a.classList.add('active'); }); }
 })();
 
-// === Helpers ===
-function euro(n){ return (n||0).toLocaleString('it-IT', { style:'currency', currency:'EUR' }); }
-function daysBetween(start, end){
-  if(!(start instanceof Date)) start = new Date(start);
-  if(!(end instanceof Date)) end = new Date(end);
-  const ms = end - start;
-  if (isNaN(ms) || ms <= 0) return 0;
-  const hours = Math.ceil(ms / 36e5);
-  return Math.max(1, Math.ceil(hours / 24));
-}
-function seasonMultiplier(d){
-  const m = d.getMonth() + 1;
-  if (m === 7 || m === 8) return 1.20; // alta stagione
-  if (m === 6 || m === 9) return 1.10; // medio-alta
-  return 1.00; // bassa
-}
+function euro(n){ return (n||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'}); }
+function daysBetween(s,e){ const ms=e-s; if(ms<=0) return 0; const h=Math.ceil(ms/36e5); return Math.max(1, Math.ceil(h/24)); }
+function seasonMultiplier(d){ const m=d.getMonth()+1; if(m===7||m===8) return 1.2; if(m===6||m===9) return 1.1; return 1.0; }
+const modelPrices={"Fiat Panda":40,"Smart ForFour (automatico)":60,"Jeep Renegade":60,"SYM Symphony 125":30,"Honda X-ADV 750":80};
+function basePriceFor(category, vehicle){ if(vehicle && modelPrices[vehicle]!=null) return modelPrices[vehicle]; const map={city:29,berlina:45,suv:59,scooter:25,moto:60}; return map[category]||0; }
 
-// Tariffe per modello (selezione esplicita prevale sulla categoria)
-const modelPrices = {
-  "Fiat Panda": 40,
-  "Smart ForFour (automatico)": 48,
-  "Volkswagen Golf": 55,
-  "Jeep Renegade": 60,
-  "SYM Symphony 125": 30,
-  "Honda X-ADV 750": 80
-};
-
-function basePriceFor(category, vehicle){
-  if (vehicle && modelPrices[vehicle] != null) return modelPrices[vehicle];
-  const map = { city:39, berlina:45, suv:59, scooter:25, moto:60 };
-  return map[String(category||'').toLowerCase()] || 0;
-}
-
-// === Motore unico di preventivo (usato da: index, mini-preventivo, prenota) ===
-/**
- * data: {
- *   start: Date, end: Date,
- *   category: 'city'|'berlina'|'suv'|'scooter'|'moto',
- *   vehicle: ''|<modello>,
- *   gps:boolean, seat:boolean, add:boolean, kasko:boolean
- * }
- */
 function calcQuote(data){
-  const start = data.start instanceof Date ? data.start : new Date(data.start);
-  const end   = data.end   instanceof Date ? data.end   : new Date(data.end);
-  const days  = daysBetween(start, end);
-  if (!days) {
-    return { items: [], imponibile:0, iva:0, totale:0, days:0 };
-  }
-
-  const cat   = data.category || 'city';
-  const base  = basePriceFor(cat, data.vehicle);
-
-  // Sconti durata (come index)
-  let sconto = 0;
-  if (days >= 14) sconto = 0.12;
-  else if (days >= 7) sconto = 0.08;
-
-  const stag = seasonMultiplier(start);
-  const giornaliero = base * stag * (1 - sconto);
-
-  // Extra per giorno
-  const extraPerDay =
-    (data.gps   ? 5 : 0) +
-    (data.seat  ? 4 : 0) +
-    (data.add   ? 6 : 0) +
-    (data.kasko ? 10: 0);
-
-  const imponibile = (giornaliero + extraPerDay) * days;
-  const iva = imponibile * 0.22;
-  const totale = imponibile + iva;
-
-  const items = [
-    { voce:`Tariffa base (${days} ${days===1?'giorno':'giorni'})`, importo: base * days },
-    { voce:`Moltiplicatore stagionale (${stag.toFixed(2)}×)`, importo: (base*stag - base) * days },
-    sconto ? { voce:`Sconto durata (${Math.round(sconto*100)}%)`, importo: - base * stag * sconto * days } : null,
-    data.gps   ? { voce:'GPS', importo:  5 * days } : null,
-    data.seat  ? { voce:'Seggiolino', importo: 4 * days } : null,
-    data.add   ? { voce:'Conducente aggiuntivo', importo: 6 * days } : null,
-    data.kasko ? { voce:'Kasko', importo: 10 * days } : null
-  ].filter(Boolean);
-
-  return { items, imponibile, iva, totale, days, giornaliero, base, sconto, stag };
+  const days=data.days; let daily=basePriceFor(data.category, data.vehicle)*seasonMultiplier(data.start);
+  if(days>=7) daily*=0.9; if(days>=14) daily*=0.85;
+  let totale=daily*days; const items=[{voce:`Tariffa base (${days} g x ${euro(daily)})`, importo: daily*days}];
+  [['Navigatore', data.gps?5:0],['Seggiolino bimbo', data.seat?4:0],['Guidatore aggiuntivo', data.add?6:0],['Kasko totale', data.kasko?15:0]].forEach(([n,p])=>{ if(p){ const add=p*days; items.push({voce:`${n} (${days} g x ${euro(p)})`, importo:add}); totale+=add; } });
+  const imponibile=totale/1.22, iva=totale-imponibile; return {days,daily,items,imponibile,iva,totale};
 }
+function renderQuote(r){ const box=document.getElementById('quoteResult'); if(!box) return; const rows=r.items.map(i=>`<tr><td>${i.voce}</td><td style="text-align:right">${euro(i.importo)}</td></tr>`).join(''); box.innerHTML=`<div class="card"><h3>Stima totale</h3><table class="breakdown"><thead><tr><th>Voce</th><th>Importo</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><th>Imponibile</th><th style="text-align:right">${euro(r.imponibile)}</th></tr><tr><th>IVA (22%)</th><th style="text-align:right">${euro(r.iva)}</th></tr><tr><th style="font-size:18px">Totale</th><th style="text-align:right;font-size:18px">${euro(r.totale)}</th></tr></tfoot></table><p class="muted" style="margin-top:8px">*Stima non vincolante.</p></div>`; }
 
-// --- Render riutilizzabile (destinazione via containerId) ---
-function renderQuote(r, containerId='quoteResult'){
-  const box = document.getElementById(containerId);
-  if(!box) return;
-  if(!r || !r.days){
-    box.innerHTML = '<p class="muted">Seleziona date valide.</p>';
-    return;
-  }
-  const rows = r.items.map(i=>`<tr><td>${i.voce}</td><td style="text-align:right">${euro(i.importo)}</td></tr>`).join('');
-  box.innerHTML = `
-    <div class="card">
-      <h3>Stima totale</h3>
-      <table class="breakdown">
-        <thead><tr><th>Voce</th><th>Importo</th></tr></thead>
-        <tbody>${rows}</tbody>
-        <tfoot>
-          <tr><th>Imponibile</th><th style="text-align:right">${euro(r.imponibile)}</th></tr>
-          <tr><th>IVA (22%)</th><th style="text-align:right">${euro(r.iva)}</th></tr>
-          <tr><th style="font-size:18px">Totale</th><th style="text-align:right;font-size:18px">${euro(r.totale)}</th></tr>
-        </tfoot>
-      </table>
-      <p class="muted" style="margin-top:8px">*Stima non vincolante.</p>
-    </div>`;
+function handlePreventivo(e){ e.preventDefault(); const f=e.target; const start=new Date(f.start.value); const end=new Date(f.end.value); if(isNaN(start)||isNaN(end)||end<=start){ document.getElementById('quoteResult').innerHTML='<p class="muted">Controlla le date.</p>'; return; } const data={start,end,category:f.category.value,vehicle:(f.vehicle?.value||''),age:Number(f.age?.value||0),gps:document.getElementById('q_gps')?.checked,seat:document.getElementById('q_seat')?.checked,add:document.getElementById('q_add')?.checked,kasko:document.getElementById('q_kasko')?.checked,days:daysBetween(start,end)}; renderQuote(calcQuote(data)); }
+
+function handleMiniQuote(e){ e.preventDefault(); const start=new Date(document.getElementById('m_start').value); const end=new Date(document.getElementById('m_end').value); const cat=document.getElementById('m_cat').value; const age=Number(document.getElementById('m_age').value||0); const out=document.getElementById('miniOut'); if(isNaN(start)||isNaN(end)||end<=start){ out.textContent='Controlla le date.'; return; } let days=daysBetween(start,end); let daily=basePriceFor(cat); if(days>=7) daily*=0.9; if(days>=14) daily*=0.85; let tot=daily*days; if(age && age<25) tot+=12*days; out.textContent=`Stima: ${euro(tot)} per ${days} giorno/i.`; }
+
+function copyQuoteLink(){ const u=new URL(window.location.href); const set=(k,v)=>{ if(v) u.searchParams.set(k,v); else u.searchParams.delete(k); }; const get=id=>document.getElementById(id)?.value||''; set('start',get('q_start')); set('end',get('q_end')); set('cat',document.getElementById('q_category')?.value); set('age',document.getElementById('q_age')?.value); ['q_gps','q_seat','q_add','q_kasko'].forEach(id=>{ if(document.getElementById(id)?.checked) u.searchParams.set(id,'1'); else u.searchParams.delete(id); }); navigator.clipboard?.writeText(u.toString()).then(()=>alert('Link preventivo copiato!')); }
+
+(function preloadFromURL(){ const p=new URLSearchParams(window.location.search); const vh=p.get('vehicle'), price=p.get('price'), c2=p.get('category'); const msg=document.getElementById('vehicleChosen'); if(msg && vh) msg.textContent=`Veicolo selezionato: ${vh} — ${euro(Number(price))}/giorno`; const sel=document.getElementById('category'); if(sel && c2) sel.value=c2; })();
+
+function handleBooking(e){ e.preventDefault(); const form=e.target; const start=new Date(form.start.value); const end=new Date(form.end.value); const status=document.getElementById('formStatus'); if(end<=start){ status.textContent='Controlla le date.'; return; } const hours=Math.ceil((end-start)/36e5); const days=Math.max(1, Math.ceil(hours/24)); const urlParams=new URLSearchParams(window.location.search); let daily=(function(){ const vh=urlParams.get('vehicle'); if(vh && modelPrices[vh]!=null) return modelPrices[vh]; return basePriceFor(form.category.value); })(); let totale=daily*days; if (document.getElementById('opt_gps')?.checked) totale+=5*days; if (document.getElementById('opt_seat')?.checked) totale+=4*days; if (document.getElementById('opt_add')?.checked) totale+=6*days; if (document.getElementById('opt_kasko')?.checked) totale+=15*days; const age=Number(form.age.value||0); if(age && age<25) totale+=12*days; status.textContent=`Disponibilità trovata! Stima: ${euro(totale)} per ${days} giorno/i. Sede: Ercolano (NA).`; form.reset(); }
+
+// === Smart Tables helpers ===
+function daysBetween(a,b){
+  const ms = (new Date(b) - new Date(a));
+  if (isNaN(ms) || ms<=0) return 0;
+  return Math.ceil(ms / (1000*60*60*24));
 }
+function euro(n){return new Intl.NumberFormat('it-IT',{style:'currency',currency:'EUR'}).format(n||0)}
+function baseRate(cat){return {"City Car":40,"Berlina":55,"SUV":60,"Scooter":30,"Moto":80}[cat]||40}
 
-// === INDEX (pagina principale) ===
-// Assumiamo un form con id="form-index" ed un contenitore quoteResult
-(function initIndex(){
-  const f = document.getElementById('form-index');
-  if(!f) return;
-  const outId = 'quoteResult';
-  const update = () => {
-    const start = f.start?.value || f['start']?.value;
-    const end   = f.end?.value   || f['end']?.value;
-    const data = {
-      start, end,
-      category: (f.category?.value || 'city'),
-      vehicle: (f.vehicle?.value || ''),
-      gps: !!f.gps?.checked,
-      seat: !!f.seat?.checked,
-      add: !!f.add?.checked,
-      kasko: !!f.kasko?.checked
-    };
-    const r = calcQuote(data);
-    renderQuote(r, outId);
-  };
-  f.addEventListener('input', update);
-  f.addEventListener('change', update);
-  update();
-})();
-
-// === MINI PREVENTIVO (widget laterale) ===
-window.calcQuoteMini = function(){
+// Preventivo
+window.calcQuote = function(){
   const pickup = document.getElementById('pv-pickup')?.value;
   const drop   = document.getElementById('pv-dropoff')?.value;
-  const catEl  = document.querySelector('input[name="pv-cat"]:checked');
-  const cat    = catEl ? catEl.value : 'City';
-  const gps    = !!document.querySelector('.pv-extra[data-key="gps"]')?.checked;
-  const seat   = !!document.querySelector('.pv-extra[data-key="seat"]')?.checked;
-  const add    = !!document.querySelector('.pv-extra[data-key="add"]')?.checked;
-  const kasko  = !!document.querySelector('.pv-extra[data-key="kasko"]')?.checked;
-
-  const data = {
-    start: pickup, end: drop,
-    category: String(cat).toLowerCase().includes('suv') ? 'suv'
-            : String(cat).toLowerCase().includes('berlina') ? 'berlina'
-            : String(cat).toLowerCase().includes('scooter') ? 'scooter'
-            : String(cat).toLowerCase().includes('moto') ? 'moto'
-            : 'city',
-    vehicle: '',
-    gps, seat, add, kasko
-  };
-  const r = calcQuote(data);
-  renderQuote(r, 'pvResult');
-};
-
+  if(!pickup || !drop) { 
+    ['pv-days','pv-base','pv-extras','pv-total'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='—'; });
+    return;
+  }
+  const catEl = document.querySelector('input[name="pv-cat"]:checked');
+  const cat = catEl ? catEl.value : 'City Car';
+  const days = daysBetween(pickup, drop);
+  const base = baseRate(cat)*days;
+  let extrasPerDay = 0; document.querySelectorAll('.pv-extra:checked').forEach(x=>extrasPerDay += Number(x.dataset.price||0));
+  const extras = extrasPerDay*days;
+  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.textContent=val};
+  set('pv-days', days || '—'); set('pv-base', days?euro(base):'—'); set('pv-extras', days?euro(extras):'—'); set('pv-total', days?euro(base+extras):'—');
+}
 window.copyQuoteLink = function(){
   const url = new URL(location.href);
   const params = new URLSearchParams({
-    p: document.getElementById('pv-pickup')?.value || '',
-    d: document.getElementById('pv-dropoff')?.value || '',
-    cat: (document.querySelector('input[name="pv-cat"]:checked')||{}).value || 'City'
+    p:document.getElementById('pv-pickup')?.value||'',
+    d:document.getElementById('pv-dropoff')?.value||'',
+    cat:(document.querySelector('input[name="pv-cat"]:checked')||{}).value||'City Car',
+    age:document.getElementById('pv-age')?.value||''
   });
-  navigator.clipboard.writeText(url.origin + url.pathname + '?' + params.toString());
+  navigator.clipboard.writeText(url.origin+url.pathname+'?'+params.toString());
   alert('Link del preventivo copiato!');
-};
+}
 
-// === PRENOTA (widget con disponibilità) ===
+// Prenota
 window.checkAvailability = function(){
-  const p   = document.getElementById('pr-pickup')?.value;
-  const d   = document.getElementById('pr-dropoff')?.value;
-  const cat = document.getElementById('pr-cat')?.value || 'City';
-  const gps   = !!document.querySelector('.pr-extra[data-key="gps"]')?.checked;
-  const seat  = !!document.querySelector('.pr-extra[data-key="seat"]')?.checked;
-  const add   = !!document.querySelector('.pr-extra[data-key="add"]')?.checked;
-  const kasko = !!document.querySelector('.pr-extra[data-key="kasko"]')?.checked;
-
-  const data = {
-    start:p, end:d,
-    category: String(cat).toLowerCase().includes('suv') ? 'suv'
-            : String(cat).toLowerCase().includes('berlina') ? 'berlina'
-            : String(cat).toLowerCase().includes('scooter') ? 'scooter'
-            : String(cat).toLowerCase().includes('moto') ? 'moto'
-            : 'city',
-    vehicle:'', gps, seat, add, kasko
-  };
-
-  const r = calcQuote(data);
-  renderQuote(r, 'prResult');
-
-  // Badge disponibilità (dummy)
+  const p = document.getElementById('pr-pickup')?.value;
+  const d = document.getElementById('pr-dropoff')?.value;
+  const cat = document.getElementById('pr-cat')?.value||'City Car';
+  const days = daysBetween(p,d);
+  let extras=0; document.querySelectorAll('.pr-extra:checked').forEach(x=>extras += Number(x.dataset.price||0));
+  const total = (baseRate(cat)+extras)*days;
   const statusCell = document.querySelector('#pr-result-rows tr:first-child td:last-child');
   if(statusCell) statusCell.innerHTML = '<span class="badge badge-ok">Disponibile</span>';
-};
-
+  const set=(id,val)=>{const el=document.getElementById(id); if(el) el.textContent=val};
+  set('pr-days', days || '—'); set('pr-total', days?euro(total):'—');
+}
 window.resetPrenota = function(){
-  document.querySelectorAll('#prenota-title ~ table input').forEach(i=>{
-    if(i.type==='checkbox'){ i.checked = false; } else { i.value = ''; }
-  });
+  document.querySelectorAll('#prenota-title ~ table input').forEach(i=>{ if(i.type==='checkbox'){i.checked=false}else i.value='' });
   const statusCell = document.querySelector('#pr-result-rows tr:first-child td:last-child');
   if(statusCell) statusCell.innerHTML = '<span class="badge badge-warn">In attesa</span>';
-  const box = document.getElementById('prResult'); if(box) box.innerHTML = '';
-};
-
+  ['pr-days','pr-total'].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent='—'});
+}
 window.sendBooking = function(){
   alert('Richiesta inviata! Ti contatteremo per conferma.');
-};
+}
