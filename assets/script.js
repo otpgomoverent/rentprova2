@@ -13,7 +13,7 @@ function seasonMultiplier(d){ const m=d.getMonth()+1; if(m===7||m===8) return 1.
 const modelPrices={"Fiat Panda":40,"Smart ForFour (automatico)":60,"Jeep Renegade":60,"SYM Symphony 125":30,"Honda X-ADV 750":80};
 function basePriceFor(category, vehicle){ if(vehicle && modelPrices[vehicle]!=null) return modelPrices[vehicle]; const map={city:29,berlina:45,suv:59,scooter:25,moto:60}; return map[category]||0; }
 
-function calcQuote(data){
+function calcQuoteEngine(data){
   const days=data.days; let daily=basePriceFor(data.category, data.vehicle)*seasonMultiplier(data.start);
   if(days>=7) daily*=0.9; if(days>=14) daily*=0.85;
   let totale=daily*days; const items=[{voce:`Tariffa base (${days} g x ${euro(daily)})`, importo: daily*days}];
