@@ -106,29 +106,57 @@ function renderQuote(r, containerId='quoteResult'){
     </div>`;
 }
 
-// ===== Index: handler del form principale =====
+// ===== Index: handler del form principale (robusto ai tuoi id/name) =====
 function handlePreventivo(e){
-  e.preventDefault();
-  const f = e.target;
-  const start = new Date(f.start.value);
-  const end   = new Date(f.end.value);
-  if(isNaN(start) || isNaN(end) || end<=start){
-    const b = document.getElementById('quoteResult');
-    if(b) b.innerHTML = '<p class="muted">Controlla le date.</p>';
+  e && e.preventDefault && e.preventDefault();
+
+  const form = (e && e.target) || document.getElementById('quoteForm') || document;
+
+  const val = (n, ...ids) => (
+    (form && form[n] && form[n].value) ||
+    ids.map(id => document.getElementById(id)?.value).find(Boolean) ||
+    ''
+  );
+
+  // supporta sia name="start|end|category" che id="q_start|q_end|q_category" o "start|end|category"
+  const startStr = val('start', 'q_start', 'start');
+  const endStr   = val('end',   'q_end',   'end');
+  const catStr   = (val('category', 'q_category', 'category') || 'city');
+
+  const start = new Date(startStr);
+  const end   = new Date(endStr);
+
+  const box = document.getElementById('quoteResult');
+  if (isNaN(start) || isNaN(end) || end <= start){
+    if (box) box.innerHTML = '<p class="muted">Controlla le date.</p>';
     return;
   }
+
   const data = {
     start, end,
-    category: f.category?.value || 'city',
-    vehicle: f.vehicle?.value || '',
-    gps: document.getElementById('q_gps')?.checked,
-    seat: document.getElementById('q_seat')?.checked,
-    add:  document.getElementById('q_add')?.checked,
-    kasko:document.getElementById('q_kasko')?.checked
+    category: String(catStr).toLowerCase(),
+    vehicle: (form && form.vehicle && form.vehicle.value) || document.getElementById('vehicle')?.value || '',
+    gps:   document.getElementById('q_gps')?.checked || false,
+    seat:  document.getElementById('q_seat')?.checked || false,
+    add:   document.getElementById('q_add')?.checked  || false,
+    kasko: document.getElementById('q_kasko')?.checked|| false
   };
+
   renderQuote(calcQuoteEngine(data), 'quoteResult');
 }
 window.handlePreventivo = handlePreventivo;
+
+// Auto-bind nel caso la form non abbia onsubmit
+document.addEventListener('DOMContentLoaded', () => {
+  const f = document.getElementById('quoteForm') || document.querySelector('form[data-quote-form]') || null;
+  if (f && !f._binded) {
+    f.addEventListener('submit', handlePreventivo);
+    // Assicura che il bottone faccia submit
+    const btn = f.querySelector('button[type="submit"], button:not([type])');
+    if (btn) btn.type = 'submit';
+    f._binded = true;
+  }
+});
 
 // ===== Mini preventivo (pagina preventivo) =====
 window.calcQuote = function(){
