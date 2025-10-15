@@ -71,7 +71,7 @@ window.calcQuote = function(){
     days: daysBetween(start, end)
   };
 
-  const result = calcQuote(data);
+  const result = calcQuoteEngine(data);
   renderQuote(result, outId);
 };
 
@@ -113,7 +113,7 @@ window.checkAvailability = function(){
     days: daysBetween(start, end)
   };
 
-  const result = calcQuote(data);
+  const result = calcQuoteEngine(data);
   renderQuote(result, outId);
 
   const statusCell = document.querySelector('#pr-result-rows tr:first-child td:last-child');
