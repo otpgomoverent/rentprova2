@@ -106,7 +106,7 @@ function renderQuote(r, containerId='quoteResult'){
     </div>`;
 }
 
-// ===== Index: handler del form principale (robusto ai tuoi id/name) =====
+// ===== Index: handler (robusto) =====
 function handlePreventivo(e){
   e && e.preventDefault && e.preventDefault();
 
@@ -118,7 +118,7 @@ function handlePreventivo(e){
     ''
   );
 
-  // supporta sia name="start|end|category" che id="q_start|q_end|q_category" o "start|end|category"
+  // supporta name="start|end|category" e id="q_start|q_end|q_category"
   const startStr = val('start', 'q_start', 'start');
   const endStr   = val('end',   'q_end',   'end');
   const catStr   = (val('category', 'q_category', 'category') || 'city');
@@ -146,12 +146,13 @@ function handlePreventivo(e){
 }
 window.handlePreventivo = handlePreventivo;
 
-// Auto-bind nel caso la form non abbia onsubmit
+// Auto-bind (anche se ti dimentichi onsubmit)
 document.addEventListener('DOMContentLoaded', () => {
-  const f = document.getElementById('quoteForm') || document.querySelector('form[data-quote-form]') || null;
+  const f = document.getElementById('quoteForm')
+        || document.querySelector('form[data-quote-form]')
+        || document.querySelector('form'); // last resort
   if (f && !f._binded) {
     f.addEventListener('submit', handlePreventivo);
-    // Assicura che il bottone faccia submit
     const btn = f.querySelector('button[type="submit"], button:not([type])');
     if (btn) btn.type = 'submit';
     f._binded = true;
