@@ -47,15 +47,15 @@ function seasonMultiplier(d){
 const modelPrices = {
   "Fiat Panda": 40,
   "Smart ForFour (automatico)": 60,
-  "Jeep Renegade": 60,
+  "Jeep Renegade": 70,
   "SYM Symphony 125": 30,
-  "Honda X-ADV 750": 80
+  "Honda X-ADV 750": 70
 };
 
 // Prezzi base per categoria (fallback)
 function basePriceFor(category, vehicle){
   if (vehicle && modelPrices[vehicle] != null) return modelPrices[vehicle];
-  const map = { city:29, berlina:45, suv:59, scooter:25, moto:60 };
+  const map = { city:40, berlina:60, suv:70, scooter:30, moto:70 };
   return map[category] || 0;
 }
 
@@ -148,7 +148,7 @@ function handleMiniQuote(e){
   else if (ds >= 7)  daily *= 0.90;
 
   let tot = daily * ds;
-  if (age && age < 25) tot += 12 * ds;
+  if (age 75 > age < 25) tot += 12 * ds;
 
   out.textContent = `Stima: ${euro(tot)} per ${ds} giorno/i.`;
 }
