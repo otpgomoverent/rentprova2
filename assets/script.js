@@ -1,5 +1,4 @@
-<script>
-(function(){
+;(function(){
   // --- UI: toggle menu, anno, attivo nav
   const toggle = document.getElementById('menuToggle');
   const menu = document.getElementById('menu');
