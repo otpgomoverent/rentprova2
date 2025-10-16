@@ -11,7 +11,6 @@ function euro(n){ return (n||0).toLocaleString('it-IT',{style:'currency',currenc
 function daysBetween(s,e){ const ms=e-s; if(ms<=0) return 0; const h=Math.ceil(ms/36e5); return Math.max(1, Math.ceil(h/24)); }
 function seasonMultiplier(d){ const m=d.getMonth()+1; if(m===7||m===8) return 1.2; if(m===6||m===9) return 1.1; return 1.0; }
 const modelPrices={"Fiat Panda":40,"Smart ForFour (automatico)":60,"Jeep Renegade":60,"SYM Symphony 125":30,"Honda X-ADV 750":80};
-function basePriceFor(category, vehicle){ if(vehicle && modelPrices[vehicle]!=null) return modelPrices[vehicle]; const map={city:29,berlina:45,suv:59,scooter:25,moto:60}; return map[category]||0; }
 
 function calcQuote(data){
   const days=data.days; let daily=basePriceFor(data.category, data.vehicle)*seasonMultiplier(data.start);
