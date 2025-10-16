@@ -148,7 +148,7 @@ function handleMiniQuote(e){
   else if (ds >= 7)  daily *= 0.90;
 
   let tot = daily * ds;
-  if (age 75 > age < 25) tot += 12 * ds;
+  if (age && age < 25) tot += 12 * ds;
 
   out.textContent = `Stima: ${euro(tot)} per ${ds} giorno/i.`;
 }
