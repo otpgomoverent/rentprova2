@@ -257,4 +257,3 @@ function handleBooking(e){
 
   form.reset();
 }
-</script>
